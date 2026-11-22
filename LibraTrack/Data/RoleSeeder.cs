@@ -4,17 +4,31 @@ using Microsoft.AspNetCore.Identity;
 namespace LibraTrack.Data;
 public class RoleSeeder
 {
-    public static async Task SeedAsync(IServiceProvider services)
+    private static async Task CreateUserAsync(UserManager<ApplicationUser> userManager, string email, string fullname, string password, string role)
     {
-        var role_Manager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        if (await userManager.FindByEmailAsync(email) != null) return;
 
-        foreach(var role in App_Roles.All)
+        var user = new ApplicationUser { UserName = email, Email = email, EmailConfirmed = true, FullName = fullname };
+        var result = await userManager.CreateAsync(user, password);
+        if (result.Succeeded)
         {
-            if (!await role_Manager.RoleExistsAsync(role))
-            {
-                await role_Manager.CreateAsync(new IdentityRole(role));
-            }
+            await userManager.AddToRoleAsync(user, role);
         }
     }
 
+    public static async Task SeedAsync(IServiceProvider services)
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+        foreach(var role in AppRoles.All)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+        await CreateUserAsync(userManager, "neil_admin@library.text", "System Admin", "NeilAdmin123", AppRoles.Admin);
+        await CreateUserAsync(userManager, "adrian_librarian@library.text", "Librarian", "AdrianLibrarian123", AppRoles.Librarian);
+    }
 }

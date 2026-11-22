@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LibraTrack.Data.Migrations
+namespace LibraTrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -41,7 +41,7 @@ namespace LibraTrack.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Full_Name")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -69,7 +69,7 @@ namespace LibraTrack.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("School_Id")
+                    b.Property<string>("SchoolId")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -98,22 +98,21 @@ namespace LibraTrack.Data.Migrations
 
             modelBuilder.Entity("LibraTrack.Models.Book", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                    b.Property<int>("BookId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
                     b.Property<string>("Author")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("BookId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Category_Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Cover_Image_Url")
+                    b.Property<string>("CoverImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -124,94 +123,147 @@ namespace LibraTrack.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<bool>("Is_Deleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Is_Featured")
+                    b.Property<bool>("IsFeatured")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("Publication_Year")
+                    b.Property<int?>("PublicationYear")
                         .HasColumnType("int");
 
                     b.Property<string>("Publisher")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Title");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
-                    b.HasIndex("Category_Id");
+                    b.HasKey("BookId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            BookId = 1,
+                            Author = "Robert C. Martin",
+                            CategoryId = 1,
+                            ISBN = "9780132350884",
+                            IsDeleted = false,
+                            IsFeatured = true,
+                            Title = "Clean Code"
+                        },
+                        new
+                        {
+                            BookId = 2,
+                            Author = "Mark Lutz",
+                            CategoryId = 2,
+                            ISBN = "978-0-596-15808-8",
+                            IsDeleted = false,
+                            IsFeatured = true,
+                            Title = "Pyhton Pocket"
+                        });
                 });
 
-            modelBuilder.Entity("LibraTrack.Models.Book_Copy", b =>
+            modelBuilder.Entity("LibraTrack.Models.BookCopy", b =>
                 {
-                    b.Property<int>("Copy_Id")
+                    b.Property<int>("CopyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Copy_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CopyId"));
 
                     b.Property<string>("Barcode")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("BookTitle")
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("Book_Id")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<string>("Branch")
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<bool>("Is_Deleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("Copy_Id");
+                    b.HasKey("CopyId");
 
-                    b.HasIndex("BookTitle");
+                    b.HasIndex("BookId");
 
-                    b.ToTable("Book_Copies");
+                    b.ToTable("BookCopies");
+
+                    b.HasData(
+                        new
+                        {
+                            CopyId = 1,
+                            Barcode = "LIB-0001",
+                            BookId = 1,
+                            Branch = "Main",
+                            IsDeleted = false,
+                            Status = 0
+                        },
+                        new
+                        {
+                            CopyId = 2,
+                            Barcode = "LIB-0002",
+                            BookId = 1,
+                            Branch = "Main",
+                            IsDeleted = false,
+                            Status = 0
+                        },
+                        new
+                        {
+                            CopyId = 3,
+                            Barcode = "LIB-0003",
+                            BookId = 2,
+                            Branch = "Main",
+                            IsDeleted = false,
+                            Status = 0
+                        });
                 });
 
             modelBuilder.Entity("LibraTrack.Models.Borrowing", b =>
                 {
-                    b.Property<int>("Borrowing_Id")
+                    b.Property<int>("BorrowingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Borrowing_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowingId"));
 
-                    b.Property<DateTime>("Borrow_Date")
+                    b.Property<DateTime>("BorrowDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CopyId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Copy_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Due_Date")
+                    b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProcessedById")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("Return_Date")
+                    b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("User_Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("BorrowingId");
 
-                    b.HasKey("Borrowing_Id");
-
-                    b.HasIndex("Copy_Id");
+                    b.HasIndex("CopyId");
 
                     b.HasIndex("ProcessedById");
 
@@ -222,11 +274,11 @@ namespace LibraTrack.Data.Migrations
 
             modelBuilder.Entity("LibraTrack.Models.Category", b =>
                 {
-                    b.Property<int>("Category_Id")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Category_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(400)
@@ -237,23 +289,37 @@ namespace LibraTrack.Data.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Category_Id");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Description = "Software and coding books",
+                            Name = "Programming"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Description = "Software and coding books",
+                            Name = "Programming"
+                        });
                 });
 
             modelBuilder.Entity("LibraTrack.Models.Notification", b =>
                 {
-                    b.Property<int>("Notifiation_Id")
+                    b.Property<int>("NotificationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Notifiation_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
-                    b.Property<DateTime>("Created_Date")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Is_Read")
+                    b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
                     b.Property<string>("Message")
@@ -265,13 +331,10 @@ namespace LibraTrack.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("User_Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Notifiation_Id");
+                    b.HasKey("NotificationId");
 
                     b.HasIndex("UserId");
 
@@ -280,40 +343,34 @@ namespace LibraTrack.Data.Migrations
 
             modelBuilder.Entity("LibraTrack.Models.Reservation", b =>
                 {
-                    b.Property<int>("Reservation_Id")
+                    b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Reservation_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<string>("BookTitle")
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("Book_Id")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Expiry_Date")
+                    b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Queue_Position")
+                    b.Property<int?>("QueuePosition")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Reserved_Date")
+                    b.Property<DateTime>("ReservedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("User_Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("ReservationId");
 
-                    b.HasKey("Reservation_Id");
-
-                    b.HasIndex("BookTitle");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -461,29 +518,29 @@ namespace LibraTrack.Data.Migrations
                 {
                     b.HasOne("LibraTrack.Models.Category", "Category")
                         .WithMany("Books")
-                        .HasForeignKey("Category_Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("LibraTrack.Models.Book_Copy", b =>
+            modelBuilder.Entity("LibraTrack.Models.BookCopy", b =>
                 {
                     b.HasOne("LibraTrack.Models.Book", "Book")
                         .WithMany("Copies")
-                        .HasForeignKey("BookTitle");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
 
             modelBuilder.Entity("LibraTrack.Models.Borrowing", b =>
                 {
-                    b.HasOne("LibraTrack.Models.Book_Copy", "Copy")
+                    b.HasOne("LibraTrack.Models.BookCopy", "Copy")
                         .WithMany()
-                        .HasForeignKey("Copy_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CopyId");
 
                     b.HasOne("LibraTrack.Models.ApplicationUser", "ProcessedBy")
                         .WithMany()
@@ -491,7 +548,9 @@ namespace LibraTrack.Data.Migrations
 
                     b.HasOne("LibraTrack.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Copy");
 
@@ -504,7 +563,9 @@ namespace LibraTrack.Data.Migrations
                 {
                     b.HasOne("LibraTrack.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -513,11 +574,15 @@ namespace LibraTrack.Data.Migrations
                 {
                     b.HasOne("LibraTrack.Models.Book", "Book")
                         .WithMany()
-                        .HasForeignKey("BookTitle");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LibraTrack.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 

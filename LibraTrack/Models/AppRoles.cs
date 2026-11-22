@@ -1,5 +1,5 @@
 ﻿namespace LibraTrack.Models;
-public class App_Roles
+public class AppRoles
 {
     public const string Admin = "Admin";
     public const string Librarian = "Librarian";

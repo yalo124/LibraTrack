@@ -10,14 +10,14 @@ public enum Notification_Type
 public class Notification
 {
     [Key]
-    public int Notifiation_Id { get; set; }// pr key
+    public int NotificationId { get; set; }// pr key
 
     [Required, StringLength(600)]
     public string Message { get; set; } = "";
     public Notification_Type Type { get; set; }
-    public DateTime Created_Date { get; set; } = DateTime.Now;
-    public bool Is_Read { get; set; }
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public bool IsRead { get; set; }
 
-    public string User_Id { get; set; } = "";
+    public string UserId { get; set; } = "";
     public ApplicationUser? User { get; set; }
 }
