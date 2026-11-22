@@ -1,0 +1,37 @@
+﻿@* Tells Razor what data the controller sent: one page of books (PagedResult<Book>) *@
+@model LibraTrack.ViewModels.PagedResult<LibraTrack.Models.Book>
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<h1>Catalog</h1>
+
+@* Bootstrap grid: 1 column on phones, 2 on tablets, 4 on large screens *@
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+    @foreach (var b in Model.Items)
+    {
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">@b.Title</h5>
+                    <p class="card-text text-muted">@b.Author<br />@b.Category?.Name</p>
+                    @* asp-route-id builds the link /Catalog/Details/{BookId} *@
+                    <a asp-action="Details" asp-route-id="@b.BookId" class="btn btn-sm btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@* Pager: uses the HasPrevious / HasNext / Page values from PagedResult *@
+<nav class="mt-3">
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPrevious ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page - 1)">Previous</a>
+        </li>
+        <li class="page-item disabled"><span class="page-link">Page @Model.Page of @Model.TotalPages</span></li>
+        <li class="page-item @(Model.HasNext ? "" : "disabled")">
+            <a class="page-link" asp-action="Index" asp-route-page="@(Model.Page + 1)">Next</a>
+        </li>
+    </ul>
+</nav>
