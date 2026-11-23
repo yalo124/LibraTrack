@@ -1,0 +1,41 @@
+﻿@model List<LibraTrack.Models.Book>
+@{
+    ViewData["Title"] = "Manage Catalog";
+}
+
+<h1>Manage Catalog</h1>
+
+@* Messages set with TempData in the controller (they survive the redirect) *@
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<a asp-action="Create" class="btn btn-primary mb-3">Add book</a>
+
+@* table-responsive: scrolls sideways on small phones *@
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Featured</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var b in Model)
+            {
+                <tr>
+                    <td>@b.Title</td>
+                    <td>@b.Author</td>
+                    <td>@b.ISBN</td>
+                    <td>@b.Category?.Name</td>
+                    <td>@(b.IsFeatured ? "Yes" : "No")</td>
+                    <td class="text-nowrap">
+                        <a asp-action="Edit" asp-route-id="@b.BookId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@b.BookId" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
