@@ -32,6 +32,7 @@
                     <td>@(b.IsFeatured ? "Yes" : "No")</td>
                     <td class="text-nowrap">
                         <a asp-action="Edit" asp-route-id="@b.BookId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-controller="ManageCopies" asp-action="Index" asp-route-bookId="@b.BookId" class="btn btn-sm btn-outline-primary">Copies</a>
                         <a asp-action="Delete" asp-route-id="@b.BookId" class="btn btn-sm btn-outline-danger">Delete</a>
                     </td>
                 </tr>

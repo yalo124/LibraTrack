@@ -1,0 +1,49 @@
+﻿@model LibraTrack.Models.Book
+@{
+    ViewData["Title"] = "Copies of " + Model.Title;
+}
+
+<h1>Copies of @Model.Title</h1>
+<p class="text-muted">@Model.Author | ISBN @Model.ISBN</p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@* Add form: posts to ManageCopiesController.Add. bookId travels in a hidden field *@
+<form asp-action="Add" method="post" class="row g-2 mb-4">
+    <input type="hidden" name="bookId" value="@Model.BookId" />
+    <div class="col-md-4"><input name="barcode" class="form-control" placeholder="Barcode (e.g. LIB-0004)" required maxlength="50" /></div>
+    <div class="col-md-4"><input name="branch" class="form-control" placeholder="Branch (default: Main)" maxlength="150" /></div>
+    <div class="col-md-4"><button type="submit" class="btn btn-primary">Add copy</button></div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead><tr><th>Barcode</th><th>Branch</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var c in Model.Copies)
+            {
+                <tr>
+                    <td>@c.Barcode</td>
+                    <td>@c.Branch</td>
+                    <td>@c.Status</td>
+                    <td>
+                        @* A form with a button, because removing changes data and must be a POST *@
+                        <form asp-action="Remove" method="post" class="d-inline"
+                              onsubmit="return confirm('Remove copy @c.Barcode?');">
+                            <input type="hidden" name="copyId" value="@c.CopyId" />
+                            <button class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-controller="ManageCatalog" asp-action="Index" class="btn btn-secondary">Back to Manage Catalog</a>

@@ -51,7 +51,7 @@ public class ManageCatalogController : Controller
         await _db.SaveChangesAsync();
 
         TempData["Success"] = $"\"{book.Title}\" was added.";
-        return RedirectToAction(nameof(Index)); // Post-Redirect-Get: avoids double submit on refresh
+        return RedirectToAction("Index", "ManageCopies", new { bookId = book.BookId });
     }
 
     // ---------- EDIT ----------
