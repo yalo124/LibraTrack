@@ -22,7 +22,7 @@ public class BookFormViewModel : IValidatableObject
     [StringLength(150)]
     public string? Publisher { get; set; }
 
-    [Range(1000, 2100, ErrorMessage = "Enter a valid year.")]
+    [Range(0, 2026, ErrorMessage = "Enter a valid year.")]
     [Display(Name = "Publication year")]
     public int? PublicationYear { get; set; }
 
