@@ -1,0 +1,16 @@
+﻿@model LibraTrack.Models.Book
+@{
+    ViewData["Title"] = "Delete book";
+}
+
+<h1>Delete book</h1>
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.Title</strong> by @Model.Author?
+    It will be hidden from the catalog (soft delete).
+</div>
+
+@* POST goes to DeleteConfirmed (its [ActionName("Delete")] makes the action name "Delete") *@
+<form asp-action="Delete" asp-route-id="@Model.BookId" method="post">
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
