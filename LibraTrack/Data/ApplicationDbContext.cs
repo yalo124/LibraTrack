@@ -25,7 +25,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Category>().HasData(
             new Category { CategoryId = 1, Name = "Programming", Description = "Software and coding books" },
             new Category { CategoryId = 2, Name = "Programming", Description = "Software and coding books" }
-);
+        );
 
         builder.Entity<Book>().HasData(
             new Book
@@ -54,5 +54,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             new BookCopy { CopyId = 3, BookId = 2, Barcode = "LIB-0003", Branch = "Main", Status = CopyStatus.Available }
 
         );
+
+        builder.Entity<Book>().HasIndex(b => b.Title);
+        builder.Entity<Book>().HasIndex(b => b.Author);
+        builder.Entity<Book>().HasIndex(b => b.ISBN);
     }
 }
