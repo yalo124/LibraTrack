@@ -21,5 +21,8 @@ public class BookResult
 
 public class QuickSearchViewModel
 {
+    public string? Query { get; set; }
+    public List<StudentResult> Students { get; set; } = new();
+    public List<BookResult> Books { get; set; } = new();
 }
 
