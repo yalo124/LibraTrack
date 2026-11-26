@@ -142,7 +142,13 @@ namespace LibraTrack.Migrations
 
                     b.HasKey("BookId");
 
+                    b.HasIndex("Author");
+
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ISBN");
+
+                    b.HasIndex("Title");
 
                     b.ToTable("Books");
 
