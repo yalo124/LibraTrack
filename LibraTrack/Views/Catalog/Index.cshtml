@@ -15,7 +15,13 @@
                 <div class="card-body">
                     <h5 class="card-title">@b.Title</h5>
                     <p class="card-text text-muted">@b.Author<br />@b.Category?.Name</p>
-                    @* asp-route-id builds the link /Catalog/Details/{BookId} *@
+
+                    @* NEW: overall availability of the book (Green / Orange / Red) *@
+                    @{
+                        var avail = b.GetAvailability();
+                    }
+                    <p><span class="badge @avail.Level.BadgeClass()">@avail.Message()</span></p>
+
                     <a asp-action="Details" asp-route-id="@b.BookId" class="btn btn-sm btn-primary">Details</a>
                 </div>
             </div>
