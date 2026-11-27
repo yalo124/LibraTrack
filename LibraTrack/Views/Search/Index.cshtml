@@ -1,0 +1,63 @@
+﻿@model LibraTrack.Models.SearchResultViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1 class="h3 mb-3">Search</h1>
+
+<!-- Same form layout as Quick Search. Field names must match the SearchController parameters -->
+<form method="get" asp-controller="Search" asp-action="Index" class="row g-2 mb-4">
+    <div class="col-12 col-md-5">
+        <input type="text" name="keyword" value="@Model.Keyword" class="form-control"
+               placeholder="Book title, author or ISBN" />
+    </div>
+    <div class="col-9 col-md-3">
+        <select name="categoryId" class="form-select">
+            <option value="">All categories</option>
+            @foreach (var c in Model.Categories)
+            {
+                <option value="@c.CategoryId" selected="@(Model.CategoryId == c.CategoryId)">@c.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-3 col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<h2 class="h5">Books</h2>
+@if (Model.TotalResults == 0)
+{
+    <div class="alert alert-info">No books found.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th></tr></thead>
+            <tbody>
+                @foreach (var b in Model.Books)
+                {
+                    <tr><td>@b.Title</td><td>@b.Author</td><td>@b.ISBN</td><td>@b.Category?.Name</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                <li class="page-item @(Model.Page == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-keyword="@Model.Keyword"
+                       asp-route-categoryId="@Model.CategoryId" asp-route-page="@(Model.Page - 1)">Previous</a>
+                </li>
+                <li class="page-item disabled"><span class="page-link">Page @Model.Page of @Model.TotalPages</span></li>
+                <li class="page-item @(Model.Page == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-keyword="@Model.Keyword"
+                       asp-route-categoryId="@Model.CategoryId" asp-route-page="@(Model.Page + 1)">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+}

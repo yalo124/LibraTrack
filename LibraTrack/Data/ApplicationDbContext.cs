@@ -24,7 +24,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<Category>().HasData(
             new Category { CategoryId = 1, Name = "Programming", Description = "Software and coding books" },
-            new Category { CategoryId = 2, Name = "Programming", Description = "Software and coding books" }
+            new Category { CategoryId = 2, Name = "Manga", Description = "Japanase Comic" }
         );
 
         builder.Entity<Book>().HasData(
@@ -42,7 +42,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                 BookId = 2,
                 Title = "Pyhton Pocket",
                 Author = "Mark Lutz",
-                ISBN = "978-0-596-15808-8",
+                ISBN = "978059615808",
+                CategoryId = 1,
+                IsFeatured = true
+            },
+            new Book
+            {
+                BookId = 101,
+                Title = "Komi Can't Communicate",
+                Author = " Tomohito Oda",
+                ISBN = "978059615825",
                 CategoryId = 2,
                 IsFeatured = true
             }
@@ -51,7 +60,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<BookCopy>().HasData(
             new BookCopy { CopyId = 1, BookId = 1, Barcode = "LIB-0001", Branch = "Main", Status = CopyStatus.Available },
             new BookCopy { CopyId = 2, BookId = 1, Barcode = "LIB-0002", Branch = "Main", Status = CopyStatus.Available },
-            new BookCopy { CopyId = 3, BookId = 2, Barcode = "LIB-0003", Branch = "Main", Status = CopyStatus.Available }
+            new BookCopy { CopyId = 3, BookId = 2, Barcode = "LIB-0003", Branch = "Main", Status = CopyStatus.Available },
+            new BookCopy { CopyId = 101, BookId = 101, Barcode = "LIB-0004", Branch = "Main", Status = CopyStatus.Available }
 
         );
 

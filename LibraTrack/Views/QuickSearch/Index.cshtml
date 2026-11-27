@@ -1,0 +1,59 @@
+﻿@model LibraTrack.Models.QuickSearchViewModel
+@{
+    ViewData["Title"] = "Quick Search";
+}
+
+<h1 class="h3 mb-3">Quick Search</h1>
+
+<form method="get" asp-controller="QuickSearch" asp-action="Index" class="row g-2 mb-4">
+    <div class="col-9 col-md-6">
+        <input type="text" name="q" value="@Model.Query" class="form-control"
+               placeholder="Student name, ID, book title or ISBN" />
+    </div>
+    <div class="col-3 col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrWhiteSpace(Model.Query))
+{
+    <h2 class="h5">Students</h2>
+    @if (!Model.Students.Any())
+    {
+        <div class="alert alert-info">No students found.</div>
+    }
+    else
+    {
+        <div class="table-responsive mb-4">
+            <table class="table table-striped">
+                <thead><tr><th>Name</th><th>ID</th><th>Email</th></tr></thead>
+                <tbody>
+                    @foreach (var s in Model.Students)
+                    {
+                        <tr><td>@s.FullName</td><td>@s.SchoolId</td><td>@s.Email</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <h2 class="h5">Books</h2>
+    @if (!Model.Books.Any())
+    {
+        <div class="alert alert-info">No books found.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Available copies</th></tr></thead>
+                <tbody>
+                    @foreach (var b in Model.Books)
+                    {
+                        <tr><td>@b.Title</td><td>@b.Author</td><td>@b.ISBN</td><td>@b.AvailableCopies</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

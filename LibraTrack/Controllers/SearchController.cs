@@ -48,7 +48,7 @@ public class SearchController : Controller
             TotalResults = total
         };
 
-        return Json(vm.Books.Select(b => b.Title));
+        return View(vm);
     }
 
 }

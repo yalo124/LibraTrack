@@ -167,11 +167,21 @@ namespace LibraTrack.Migrations
                         {
                             BookId = 2,
                             Author = "Mark Lutz",
-                            CategoryId = 2,
-                            ISBN = "978-0-596-15808-8",
+                            CategoryId = 1,
+                            ISBN = "978059615808",
                             IsDeleted = false,
                             IsFeatured = true,
                             Title = "Pyhton Pocket"
+                        },
+                        new
+                        {
+                            BookId = 101,
+                            Author = " Tomohito Oda",
+                            CategoryId = 2,
+                            ISBN = "978059615825",
+                            IsDeleted = false,
+                            IsFeatured = true,
+                            Title = "Komi Can't Communicate"
                         });
                 });
 
@@ -231,6 +241,15 @@ namespace LibraTrack.Migrations
                             CopyId = 3,
                             Barcode = "LIB-0003",
                             BookId = 2,
+                            Branch = "Main",
+                            IsDeleted = false,
+                            Status = 0
+                        },
+                        new
+                        {
+                            CopyId = 101,
+                            Barcode = "LIB-0004",
+                            BookId = 101,
                             Branch = "Main",
                             IsDeleted = false,
                             Status = 0
@@ -309,8 +328,8 @@ namespace LibraTrack.Migrations
                         new
                         {
                             CategoryId = 2,
-                            Description = "Software and coding books",
-                            Name = "Programming"
+                            Description = "Japanase Comic",
+                            Name = "Manga"
                         });
                 });
 
