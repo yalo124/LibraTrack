@@ -46,11 +46,19 @@
     {
         <div class="table-responsive">
             <table class="table table-striped">
-                <thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Available copies</th></tr></thead>
+                <thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Available copies</th><th></th></tr></thead>
                 <tbody>
                     @foreach (var b in Model.Books)
                     {
-                        <tr><td>@b.Title</td><td>@b.Author</td><td>@b.ISBN</td><td>@b.AvailableCopies</td></tr>
+                        <tr>
+                            <td>@b.Title</td>
+                            <td>@b.Author</td>
+                            <td>@b.ISBN</td>
+                            <td>@b.AvailableCopies</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" asp-controller="Catalog" asp-action="Details" asp-route-id="@b.BookId">Details</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
