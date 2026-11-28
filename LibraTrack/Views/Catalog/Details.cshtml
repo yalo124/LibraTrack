@@ -6,6 +6,8 @@
 
 <h1>@Model.Title</h1>
 <p class="text-muted">by @Model.Author | @Model.Category?.Name</p>
+@{  var avail = Model.GetAvailability(); }
+<p><span class="badge fs-6 @avail.Level.BadgeClass()">@avail.Message()</span></p>
 
 <dl class="row">
     <dt class="col-sm-3">ISBN</dt>
@@ -24,7 +26,12 @@
     <tbody>
         @foreach (var c in Model.Copies)
         {
-            <tr><td>@c.Barcode</td><td>@c.Branch</td><td>@c.Status</td></tr>
+            <tr>
+                <td>@c.Barcode</td>
+                <td>@c.Branch</td>
+                @* NEW: per-copy badge. c.Status is the text (Available/Reserved/Borrowed), the color comes from the copy's level *@
+                <td><span class="badge @c.GetAvailability().BadgeClass()">@c.Status</span></td>
+            </tr>
         }
     </tbody>
 </table>
